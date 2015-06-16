@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+
+    <spring:bean-factory>
+        <spring:application-context-uri>application-context.xml</spring:application-context-uri>
+    </spring:bean-factory>
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>dollar-bill</cache-name>
+            <scheme-name>distributed</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <distributed-scheme>
+            <scheme-name>distributed</scheme-name>
+            <service-name>DistributedCache</service-name>
+            <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                    <internal-cache-scheme>
+                        <local-scheme>
+                            <expiry-delay>30s</expiry-delay>
+                        </local-scheme>
+                    </internal-cache-scheme>
+                    <cachestore-scheme>
+                        <class-scheme>
+                            <spring:bean>
+                                <spring:bean-name>cacheLoader</spring:bean-name>
+                            </spring:bean>
+                        </class-scheme>
+                    </cachestore-scheme>
+                    <refresh-ahead-factor>0.5</refresh-ahead-factor>
+                </read-write-backing-map-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+        </distributed-scheme>
+    </caching-schemes>
+
+</cache-config>
