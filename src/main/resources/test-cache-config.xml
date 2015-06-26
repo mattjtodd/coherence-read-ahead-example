@@ -5,13 +5,9 @@
               xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
 
-    <spring:bean-factory>
-        <spring:application-context-uri>application-context.xml</spring:application-context-uri>
-    </spring:bean-factory>
-
     <caching-scheme-mapping>
         <cache-mapping>
-            <cache-name>dollar-bill</cache-name>
+            <cache-name>cachingBean</cache-name>
             <scheme-name>distributed</scheme-name>
         </cache-mapping>
     </caching-scheme-mapping>
@@ -24,7 +20,7 @@
                 <read-write-backing-map-scheme>
                     <internal-cache-scheme>
                         <local-scheme>
-                            <expiry-delay>30s</expiry-delay>
+                            <scheme-ref>object-backing-map</scheme-ref>
                         </local-scheme>
                     </internal-cache-scheme>
                     <cachestore-scheme>
@@ -39,6 +35,18 @@
             </backing-map-scheme>
             <autostart>true</autostart>
         </distributed-scheme>
+
+        <!--
+         A scheme used by backing maps that may store data in object format and
+         employ size limitation and/or expiry eviction policies.
+        -->
+        <local-scheme>
+            <scheme-name>object-backing-map</scheme-name>
+            <eviction-policy>HYBRID</eviction-policy>
+            <high-units>{back-size-limit 0}</high-units>
+            <expiry-delay>12h</expiry-delay>
+        </local-scheme>
+
     </caching-schemes>
 
 </cache-config>

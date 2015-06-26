@@ -2,9 +2,27 @@
 
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-    <bean id="cacheLoader" class="com.mattjtodd.coherence.TestClassLoader" lazy-init="true"/>
+    <cache:annotation-driven cache-manager="cacheManager"/>
+
+    <bean id="cacheFactoryBinder"
+          class="com.mattjtodd.coherence.CoherenceCacheBeanFactoryBinder"
+          init-method="init"/>
+
+    <bean id="cacheLoader" class="com.mattjtodd.coherence.TestCacheLoader"
+          p:cachingBean-ref="cachingBean"/>
+
+    <bean id="cacheWarmer" class="com.mattjtodd.coherence.CacheWarmer"
+          p:cachingBean-ref="cachingBean" init-method="warm"/>
+
+    <bean id="cachingBean" class="com.mattjtodd.coherence.CachingBean"/>
+
+    <bean id="cacheManager" class="com.mattjtodd.coherence.CoherenceCacheManager" depends-on="cacheFactoryBinder"/>
 
 </beans>
