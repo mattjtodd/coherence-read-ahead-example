@@ -11,18 +11,8 @@
 
     <cache:annotation-driven cache-manager="cacheManager"/>
 
-    <bean id="cacheFactoryBinder"
-          class="com.mattjtodd.coherence.CoherenceCacheBeanFactoryBinder"
-          init-method="init"/>
-
-    <bean id="cacheLoader" class="com.mattjtodd.coherence.TestCacheLoader"
-          p:cachingBean-ref="cachingBean"/>
-
-    <bean id="cacheWarmer" class="com.mattjtodd.coherence.CacheWarmer"
-          p:cachingBean-ref="cachingBean" init-method="warm"/>
-
     <bean id="cachingBean" class="com.mattjtodd.coherence.CachingBean"/>
 
-    <bean id="cacheManager" class="com.mattjtodd.coherence.CoherenceCacheManager" depends-on="cacheFactoryBinder"/>
+    <bean id="cacheManager" class="com.mattjtodd.coherence.CoherenceCacheManager"/>
 
 </beans>

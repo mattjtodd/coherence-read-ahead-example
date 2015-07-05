@@ -1,60 +1,43 @@
 package com.mattjtodd.coherence;
 
-import com.tangosol.net.CacheFactory;
-import com.tangosol.net.NamedCache;
-import org.springframework.cache.Cache;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.cache.CacheManager;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by mattjtodd on 24/06/15.
+ * Implementation of Spring CacheManager for Coherence.
  */
-public class CoherenceCacheManager  implements CacheManager {
+public class CoherenceCacheManager implements CacheManager {
 
-    /**
-     * Map of existing caches
-     */
-    private final ConcurrentMap<String, CoherenceCache> caches = new ConcurrentHashMap<>();
+    private final AtomicReference<ImmutableMap<String, CoherenceCache>> caches;
 
-    /**
-     * Default constructor - Warms up the Coherence cluster
-     */
-    public CoherenceCacheManager() {
-        CacheFactory.ensureCluster();
+    private final Function<String, CoherenceCache> cacheFactory;
+
+    public CoherenceCacheManager(Function<String, CoherenceCache> cacheFactory) {
+        this.cacheFactory = checkNotNull(cacheFactory);
+        caches = new AtomicReference<>(ImmutableMap.of());
     }
 
-    /**
-     * Return the cache associated with the given name.
-     *
-     * @param name cache identifier (must not be {@code null})
-     *
-     * @return associated cache, or {@code null} if none is found
-     */
     @Override
-    public Cache getCache(String name) {
-        CoherenceCache cache = caches.get(name);
-        if (cache == null) {
-            final NamedCache namedCache = CacheFactory.getCache(name);
-            cache = new CoherenceCache(namedCache);
-            final CoherenceCache currentCache = caches.putIfAbsent(name, cache);
-            if (currentCache != null) {
-                cache = currentCache;
-            }
-        }
-        return cache;
+    public CoherenceCache getCache(String name) {
+        return caches.updateAndGet(caches -> createCache(caches, name)).get(name);
     }
 
-    /**
-     * Return a collection of the caches known by this cache manager.
-     *
-     * @return names of caches known by the cache manager.
-     */
     @Override
     public Collection<String> getCacheNames() {
-        return Collections.unmodifiableSet(caches.keySet());
+        return caches.get().keySet();
+    }
+
+    private ImmutableMap<String, CoherenceCache> createCache(ImmutableMap<String, CoherenceCache> caches, String name) {
+        ImmutableMap<String, CoherenceCache> map = caches;
+        if (!caches.containsKey(name)) {
+            map = ImmutableMap.<String, CoherenceCache>builder().putAll(caches).put(name, cacheFactory.apply(name)).build();
+        }
+        return map;
     }
 }
