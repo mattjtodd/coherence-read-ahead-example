@@ -8,7 +8,7 @@
 
     <caching-scheme-mapping>
         <cache-mapping>
-            <cache-name>cachingBean</cache-name>
+            <cache-name>cachingService</cache-name>
             <scheme-name>distributed</scheme-name>
         </cache-mapping>
     </caching-scheme-mapping>

@@ -13,18 +13,22 @@
  */
 package com.mattjtodd.coherence;
 
-import com.tangosol.util.ResourceRegistry;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
- * Provides a way of registering resources with a {@name ResourceRegistry}.
+ * Created by mattjtodd on 06/07/15.
  */
-public interface ResourceRegistrar {
+public class CachingService {
 
-    /**
-     * Registers resource(es) with the resource registry.
-     *
-     * @param resourceRegistry the resource to which resources should be registered
-     * @return
-     */
-    String registerResource(ResourceRegistry resourceRegistry);
+    private final String value = RandomStringUtils.randomAlphabetic(10);
+
+    @Cacheable("caching-service")
+    public String findValue(String key) {
+        return value;
+    }
+
+    String getValue() {
+        return value;
+    }
 }
