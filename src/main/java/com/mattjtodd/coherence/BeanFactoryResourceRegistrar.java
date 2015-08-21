@@ -11,31 +11,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mattjtodd.coherence;
 
-import com.tangosol.util.ResourceRegistry;
-import org.springframework.beans.factory.BeanFactory;
+package com.mattjtodd.coherence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.oracle.coherence.spring.SpringNamespaceHandler.DEFAULT_FACTORY_NAME;
+
+import com.tangosol.util.ResourceRegistry;
+
+import org.springframework.beans.factory.BeanFactory;
 
 /**
  * Registers a {@name BeanFactory} with a {@name ResourceRegistry}.
  */
 public class BeanFactoryResourceRegistrar implements ResourceRegistrar {
-    private final BeanFactory beanFactory;
+  private final BeanFactory beanFactory;
 
-    /**
-     * Creates a new instance with the supplied factory.
-     *
-     * @param beanFactory the bean factory to be registered
-     */
-    public BeanFactoryResourceRegistrar(BeanFactory beanFactory) {
-        this.beanFactory = checkNotNull(beanFactory);
-    }
+  /**
+   * Creates a new instance with the supplied factory.
+   *
+   * @param beanFactory the bean factory to be registered
+   */
+  public BeanFactoryResourceRegistrar(BeanFactory beanFactory) {
+    this.beanFactory = checkNotNull(beanFactory);
+  }
 
-    @Override
-    public String registerResource(ResourceRegistry resourceRegistry) {
-        return resourceRegistry.registerResource(BeanFactory.class, DEFAULT_FACTORY_NAME, beanFactory);
-    }
+  @Override
+  public String registerResource(ResourceRegistry resourceRegistry) {
+    return resourceRegistry.registerResource(BeanFactory.class, DEFAULT_FACTORY_NAME, beanFactory);
+  }
 }

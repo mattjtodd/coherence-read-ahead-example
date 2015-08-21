@@ -11,6 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.mattjtodd.coherence;
 
 import com.tangosol.net.CacheFactory;
@@ -24,26 +25,25 @@ import java.util.Collection;
  */
 public final class ConfigurableCacheFactories {
 
-    private ConfigurableCacheFactories() {
-        // prevents construction
-    }
+  private ConfigurableCacheFactories() {
+    // prevents construction
+  }
 
-    /**
-     * Creates a factory which has resource
-     *
-     * @param resourceRegistrars
-     * @param classLoader
-     * @return
-     */
-    public static ConfigurableCacheFactory withRegistrars(Collection<ResourceRegistrar> resourceRegistrars, ClassLoader classLoader) {
-        ConfigurableCacheFactory configurableCacheFactory = withClassLoader(classLoader);
-        ResourceRegistry resourceRegistry = configurableCacheFactory.getResourceRegistry();
-        resourceRegistrars.forEach(resourceRegistrar -> resourceRegistrar.registerResource(resourceRegistry));
-        return configurableCacheFactory;
-    }
+  /**
+   * Creates a factory which has resource.
+   */
+  public static ConfigurableCacheFactory withRegistrars(Collection<ResourceRegistrar>
+                                                            resourceRegistrars,
+                                                        ClassLoader classLoader) {
+    ConfigurableCacheFactory configurableCacheFactory = withClassLoader(classLoader);
+    ResourceRegistry resourceRegistry = configurableCacheFactory.getResourceRegistry();
+    resourceRegistrars.forEach(
+        resourceRegistrar -> resourceRegistrar.registerResource(resourceRegistry));
+    return configurableCacheFactory;
+  }
 
-    public static ConfigurableCacheFactory withClassLoader(ClassLoader classLoader) {
-        return CacheFactory.getConfigurableCacheFactory(classLoader);
-    }
+  public static ConfigurableCacheFactory withClassLoader(ClassLoader classLoader) {
+    return CacheFactory.getConfigurableCacheFactory(classLoader);
+  }
 }
 

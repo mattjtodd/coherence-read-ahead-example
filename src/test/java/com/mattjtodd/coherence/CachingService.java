@@ -11,6 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.mattjtodd.coherence;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -21,14 +22,14 @@ import org.springframework.cache.annotation.Cacheable;
  */
 public class CachingService {
 
-    private final String value = RandomStringUtils.randomAlphabetic(10);
+  private final String value = RandomStringUtils.randomAlphabetic(10);
 
-    @Cacheable("caching-service")
-    public String findValue(String key) {
-        return value;
-    }
+  @Cacheable("caching-service")
+  public String findValue(String key) {
+    return value;
+  }
 
-    String getValue() {
-        return value;
-    }
+  String getValue() {
+    return value;
+  }
 }

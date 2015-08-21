@@ -3,7 +3,7 @@
 <coherence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config"
            xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-operational-config
-                               http://xmlns.oracle.com/coherence/coherence-operational-config/1.0/coherence-operational-config.xsd">
+                               http://xmlns.oracle.com/coherence/coherence-operational-config/1.2/coherence-operational-config.xsd">
 
     <cluster-config>
 
@@ -13,7 +13,8 @@
 
         <multicast-listener>
             <time-to-live system-property="tangosol.coherence.ttl">4</time-to-live>
-            <join-timeout-milliseconds system-property="tangosol.coherence.join.timeout">3000</join-timeout-milliseconds>
+            <join-timeout-milliseconds system-property="tangosol.coherence.join.timeout">3000
+            </join-timeout-milliseconds>
         </multicast-listener>
 
         <shutdown-listener>
@@ -21,12 +22,16 @@
         </shutdown-listener>
 
         <service-guardian>
-            <service-failure-policy system-property="tangosol.coherence.service.failure.policy">logging</service-failure-policy>
+            <service-failure-policy system-property="tangosol.coherence.service.failure.policy">
+                logging
+            </service-failure-policy>
         </service-guardian>
 
         <packet-publisher>
             <packet-delivery>
-                <timeout-milliseconds system-property="tangosol.coherence.packet.timeout.milliseconds">60000</timeout-milliseconds>
+                <timeout-milliseconds
+                        system-property="tangosol.coherence.packet.timeout.milliseconds">60000
+                </timeout-milliseconds>
             </packet-delivery>
         </packet-publisher>
 
@@ -36,7 +41,9 @@
         <init-params>
             <init-param>
                 <param-type>java.lang.String</param-type>
-                <param-value system-property="tangosol.coherence.cacheconfig">test-cache-config.xml</param-value>
+                <param-value system-property="tangosol.coherence.cacheconfig">
+                    test-cache-config.xml
+                </param-value>
             </init-param>
         </init-params>
     </configurable-cache-factory-config>

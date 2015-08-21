@@ -11,6 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.mattjtodd.coherence;
 
 import com.tangosol.util.ResourceRegistry;
@@ -20,11 +21,10 @@ import com.tangosol.util.ResourceRegistry;
  */
 public interface ResourceRegistrar {
 
-    /**
-     * Registers resource(es) with the resource registry.
-     *
-     * @param resourceRegistry the resource to which resources should be registered
-     * @return
-     */
-    String registerResource(ResourceRegistry resourceRegistry);
+  /**
+   * Registers resource(es) with the resource registry.
+   *
+   * @param resourceRegistry the resource to which resources should be registered
+   */
+  String registerResource(ResourceRegistry resourceRegistry);
 }
