@@ -26,7 +26,7 @@ import java.util.Collection;
 public final class ConfigurableCacheFactories {
 
   private ConfigurableCacheFactories() {
-    // prevents construction
+    throw new AssertionError();
   }
 
   /**

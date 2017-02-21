@@ -26,17 +26,24 @@ import com.tangosol.net.NamedCache;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Date;
 
 /**
  * Created by mattjtodd on 30/06/15.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class CoherenceCacheTest {
+
+  @Rule
+  public ExpectedException expectedException = ExpectedException.none();
 
   @InjectMocks
   private CoherenceCache coherenceCache;
@@ -130,5 +137,22 @@ public class CoherenceCacheTest {
     when(namedCache.get(key)).thenReturn(null);
 
     assertNull(coherenceCache.get(key));
+  }
+
+  @Test
+  public void getWhenCacheValueIsStringExpectingDateExpectingClassCastException() {
+    when(namedCache.get(key)).thenReturn(randomAlphabetic(6));
+
+    expectedException.expect(ClassCastException.class);
+    expectedException.expectMessage("Cannot cast java.lang.String to java.util.Date");
+
+    coherenceCache.get(key, Date.class);
+  }
+
+  @Test
+  public void getWhenCacheValueIsNullExpectingNull() {
+    when(namedCache.get(key)).thenReturn(null);
+
+    assertNull(coherenceCache.get(key, Date.class));
   }
 }

@@ -26,21 +26,26 @@ import com.tangosol.net.ConfigurableCacheFactory;
 import com.tangosol.util.ResourceRegistry;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.reflect.Whitebox;
 
 import java.util.Collections;
 
 /**
  * Tests for the ConfigurableCacheFactories.
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest(CacheFactory.class)
 public class ConfigurableCacheFactoriesTest {
+
+  @Rule
+  public PowerMockRule rule = new PowerMockRule();
 
   @Mock
   private ClassLoader classLoader;
@@ -48,12 +53,20 @@ public class ConfigurableCacheFactoriesTest {
   @Mock
   private ConfigurableCacheFactory configurableCacheFactory;
 
+  /**
+   * Setup.
+   */
   @Before
   public void setUp() {
     mockStatic(CacheFactory.class);
 
     when(CacheFactory.getConfigurableCacheFactory(classLoader))
         .thenReturn(configurableCacheFactory);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void constructReflectivelyExpectingAssertionErrorThrown() throws Exception {
+    Whitebox.invokeConstructor(ConfigurableCacheFactories.class);
   }
 
   @Test
